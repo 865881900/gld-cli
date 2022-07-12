@@ -1,8 +1,8 @@
 /**
  * 下载package的依赖
  */
-const {hasNpm69rLater, hasPackageVersionOrLater, hasPnpm3OrLater, hasYarn} = require('../utils/packageVersion');
-const {error} = require('../utils/console');
+const {hasNpm69rLater, hasPackageVersionOrLater, hasPnpm3OrLater, hasYarn} = require('../utils-js/packageVersion');
+const {error} = require('../utils-js/console');
 
 const execa = require('execa')
 

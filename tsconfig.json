@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    //    "esModuleInterop": true,
+    "outDir": "./dist/",
+    // 输出目录路径
+    "sourceMap": true,
+    // 允许sourcemap支持
+    "strictNullChecks": true,
+    "module": "commonjs",
+    // 作为最佳实践，启用严格的空检查
+    //    "module": "es6",
+    // 指定模块代码生成
+    //"jsx": "react",             // 使用typescript将JSX转换为js
+    //"module": "CommonJS",
+    //    "target": "es5",
+    // 指定ECMAScript目标版本
+    "allowJs": true
+    // 允许部分TypeScript和JavaScript代码库
+  },
+  //是不需要检查哪的文件来编译
+  "exclude": [
+    "node_modules"
+  ],
+
+  //是需要检查哪的文件来编译
+  "include": [
+    "**/**/*.ts",
+    "**/**/*.tsx"
+  ]
+}
+

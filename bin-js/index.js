@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 const {program, Option} = require('commander');
-const createProject = require('../lib/createProject');
+const createProject = require('../lib-js/createProject');
 const minimist = require('minimist');
-const {warning, error} = require('../utils/console')
+const {warning, error} = require('../utils-js/console')
 
 program
   .name('gld-cli')

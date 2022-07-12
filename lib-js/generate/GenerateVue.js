@@ -1,9 +1,9 @@
 const ConsoleInteraction = require('../ConsoleInteraction');
 const {vueTemplateList} = require('./vueconfig');
-const {success, error} = require('../../utils/console');
+const {success, error} = require('../../utils-js/console');
 const ora = require('ora');
 const {PackageManager} = require('../PackageManager');
-const {githubDownload} = require("../../utils/githubDownload");
+const {githubDownload} = require("../../utils-js/githubDownload");
 const fs = require("fs-extra");
 const path = require("path");
 

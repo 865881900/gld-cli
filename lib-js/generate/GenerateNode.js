@@ -1,8 +1,8 @@
 const ConsoleInteraction = require("../ConsoleInteraction");
 const {vueTemplateList} = require("./vueconfig");
 const ora = require("ora");
-const {success} = require("../../utils/console");
-const {githubDownload} = require("../../utils/githubDownload");
+const {success} = require("../../utils-js/console");
+const {githubDownload} = require("../../utils-js/githubDownload");
 const {PackageManager} = require("../PackageManager");
 module.exports = class GenerateNode {
   constructor() {

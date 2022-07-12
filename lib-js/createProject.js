@@ -1,6 +1,6 @@
 const path = require('path');
 const validateNpmPackageName = require('validate-npm-package-name')
-const {error} = require('../utils/console');
+const {error} = require('../utils-js/console');
 const fs = require('fs-extra');
 const ConsoleInteraction = require('./consoleInteraction');
 const GenerateVue = require('./generate/GenerateVue');
