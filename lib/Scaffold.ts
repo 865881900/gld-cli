@@ -1,8 +1,14 @@
 import {Command, Option} from 'commander';
 import * as minimist from 'minimist';
-import message from './utils/Console';
+import message from './utils/Message';
 import Create from './create/Create';
 
+/**
+ * @file: 脚手架类
+ * 初始化脚手架命令
+ * @author: ChaoPengWang(wangcp-a@glodon.com)
+ * @update: 2022/7/12 4:34 PM
+ */
 export default class Scaffold {
   program: Command;
 
@@ -45,8 +51,6 @@ export default class Scaffold {
       .action((str, options) => {
         console.log('projectName: ', str);
         console.log('options: ', options);
-
-
         // 提取命令行参数
         const _ = minimist(process.argv.slice(3))._;
 
