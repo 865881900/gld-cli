@@ -12,24 +12,24 @@
  * @return {string}
  */
 export class Message {
-  static changeColor(message: string, color = 92) {
+  private changeColor(message: string, color = 92) {
     console.log(`\x1b[${color}m${message}\x1b[0m`);
   }
 
   error(message: string) {
-    Message.changeColor(message, 91);
+    this.changeColor(message, 91);
   }
 
   success(message: string) {
-    Message.changeColor(message, 92);
+    this.changeColor(message, 92);
   }
 
   warning(message: string) {
-    Message.changeColor(message, 93);
+    this.changeColor(message, 93);
   }
 
   info(message: string){
-    Message.changeColor(message, 90);
+    this.changeColor(message, 1);
   }
 }
 

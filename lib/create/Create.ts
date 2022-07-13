@@ -45,7 +45,7 @@ export default class Create {
   merge: boolean;
 
   // 项目的远程地址
-  gitPath: string | undefined;
+  gitUrlAndBranch: string | undefined;
 
 
   /**
@@ -57,6 +57,7 @@ export default class Create {
   constructor(projectName: string, createOption: ICreateOption, type: NewProjectType) {
     // 当前node工作路径
     const cwd = process.cwd();
+    this.inCurrent = projectName === '.' || projectName === './' || projectName === '/';
     const newProjectName = this.inCurrent ? path.relative('../', cwd) : projectName;
     const newProjectPath = path.resolve(cwd, projectName || './');
 
@@ -64,10 +65,10 @@ export default class Create {
     this.packageManager = new PackageManager(createOption.pm, newProjectPath);
     this.github = new Github(newProjectPath);
 
-    this.inCurrent = projectName === '.' || projectName === './' || projectName === '/';
+
     this.force = createOption.force;
     this.merge = createOption.merge;
-    this.gitPath = createOption.gitPath;
+    this.gitUrlAndBranch = createOption.gitUrlAndBranch;
     this.type = type;
 
 
@@ -97,7 +98,6 @@ export default class Create {
     if (baseTemplate.type === 'BASE_COM') {
       modules = await this.newProject.selectBaseModule();
     }
-
     // 拉取远程
     await this.github.githubDownload(baseTemplate.path, this.inCurrent ? '.' : this.newProject.newProjectName);
 
@@ -110,11 +110,20 @@ export default class Create {
     // 初始化git
     await this.github.initGit();
 
+    //git add
+    await this.github.addGit();
+
     // npm 初始化
     await this.packageManager.install();
 
     // 初始化钩子
     await this.packageManager.husky();
+
+    // 关联新的存储库
+    if (this.gitUrlAndBranch) {
+      await this.github.associatedEewRepository(this.gitUrlAndBranch);
+    }
+
   }
 
   /**

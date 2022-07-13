@@ -1,7 +1,8 @@
-import {execaSync, execa} from 'execa';
+import * as execa from 'execa';
 import {gte} from 'semver';
 import {PM} from '../type';
 import message from './Message';
+import * as ora from 'ora';
 
 /**
  * @file: npm包管理器实例
@@ -39,10 +40,14 @@ export class PackageManager {
 
   // 执行 npm install 操作
   async install(cwd?: string): Promise<void> {
-    message.info('📦  安装npm依赖中...');
+    message.info('📦 开始安装npm依赖');
+    const downloadTemplate = ora();
+    downloadTemplate.start('安装npm依赖中... \n');
     await execa(this.pm, [...PACKAGE_MANAGER_CONFIG[this.pm].install], {
       cwd: cwd || this.cwd,
     });
+    downloadTemplate.stop();
+    message.success('npm依赖安装成功');
   }
 
   // 因为有git钩子,需要执行该命令添加钩子
@@ -64,7 +69,7 @@ export class PackageManager {
       return packageVersionMap.get(packageName);
     }
     try {
-      const version = execaSync(packageName, ['--version']).stdout;
+      const version = execa.sync(packageName, ['--version']).stdout;
       packageVersionMap.set(packageName, version);
       return version;
     } catch (e) {

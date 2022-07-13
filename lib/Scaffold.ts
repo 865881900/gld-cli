@@ -46,7 +46,7 @@ export default class Scaffold {
       .argument('projectName <string>', '项目名称')
       .option('-f, --force', '如果目录已经存在,使用该参数会覆盖该目录的内容', false)
       .option('--merge', '合并当前目录的内容', false)
-      .option('--gitPath <string>', '初始化git地址', '')
+      .option('-gub --gitUrlAndBranch <string>', '新项目需要关联的git仓库地址, 如果要指定分支使用#分隔; https://github.com/***/**.git#master', '')
       .addOption(new Option('-m, --packageManager <command>', '指定npm包的管理客户端: yarn/pnpm/npm,默认为npm').choices(['yarn', 'pnpm', 'npm']).default('npm'))
       .action((str, options) => {
         console.log('projectName: ', str);
