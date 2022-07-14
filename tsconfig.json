@@ -12,7 +12,7 @@
     // 指定模块代码生成
     //"jsx": "react",             // 使用typescript将JSX转换为js
     //"module": "CommonJS",
-    //    "target": "es5",
+    "target": "es5",
     // 指定ECMAScript目标版本
     "allowJs": true
     // 允许部分TypeScript和JavaScript代码库
@@ -21,7 +21,6 @@
   "exclude": [
     "node_modules"
   ],
-
   //是需要检查哪的文件来编译
   "include": [
     "**/**/*.ts",

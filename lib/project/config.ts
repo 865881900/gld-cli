@@ -1,4 +1,5 @@
 import IBaseTemplate from '../interface/IBaseTemplate';
+import {BaseModuleOption} from '../type';
 
 export const baseTemplateList: Array<IBaseTemplate> = [
   {
@@ -14,12 +15,25 @@ export const baseTemplateList: Array<IBaseTemplate> = [
   },
 ];
 
-export const baseModuleList: Array<any> = [
+
+// name: string; // 模块描述
+// value: string; // 模块识别标识
+// moduleType: IProjectModuleType; // 模块类型
+// projectPath?: string; // 文件安装路径
+// version?: string; // 包的版本
+// npmName?: string; // 包名
+
+export const baseModuleList: Array<BaseModuleOption> = [
   {
     name: '动态路由模块',
-    value: 'lib/module/DynamicRouterModule',
+    value: 'lib/module/dynamicRouterModule/index',
+    moduleType: 'file',
+    projectPath: 'src/router/dynamicRouter',
   }, {
     name: 'api缓存模块',
-    value: 'lib/module/ApiCacheModule',
+    value: 'lib/module/apiCacheModule/index',
+    moduleType: 'npm',
+    npmName: 'gld-api-cache',
+    version: '1.0.0',
   },
 ];

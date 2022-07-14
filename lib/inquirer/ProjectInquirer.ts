@@ -25,7 +25,7 @@ export class ProjectInquirer {
 
 
   // 多选模块
-  checkboxModules(moduleList): Promise<any> {
+  checkboxModules(moduleList): Promise<{modules:Array<string>}> {
     return this.inquirer.prompt({
       message: '选择需要添加的模块',
       type: 'checkbox',

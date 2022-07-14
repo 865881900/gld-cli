@@ -2,7 +2,7 @@ import IBaseTemplate from '../interface/IBaseTemplate';
 import {ProjectInquirer} from '../inquirer/ProjectInquirer';
 
 import {baseModuleList, baseTemplateList} from './config';
-import IBaseModule from '../interface/IBaseModule';
+import {BaseModuleOption} from '../type';
 
 
 /**
@@ -12,9 +12,8 @@ import IBaseModule from '../interface/IBaseModule';
  * @update: 2022/7/12 4:30 PM
  */
 export default class VueNewProject {
-
-  baseModuleList: Array<IBaseModule>;
   baseTemplateList: Array<IBaseTemplate>;
+  baseModuleList: Array<BaseModuleOption>;
   newProjectModuleList: Array<any>;
   newProjectName: string;
   newProjectPath: string;
@@ -48,8 +47,10 @@ export default class VueNewProject {
    * @implements INewProject.selectBaseModule
    * @return 选择的基础模块路径
    */
-  async selectBaseModule(): Promise<Array<string>> {
+  async selectBaseModule(): Promise<Array<BaseModuleOption>> {
     const {modules} = await this.projectInquirer.checkboxModules(this.baseModuleList);
-    return modules;
+    return this.baseModuleList.filter((item: BaseModuleOption) => {
+      return modules.includes(item.value);
+    });
   }
 }

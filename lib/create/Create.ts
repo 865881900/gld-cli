@@ -4,7 +4,7 @@ import {pathExistsSync, readdirSync, readJSONSync, removeSync, writeJsonSync} fr
 
 // import NodeNewProject from '../project/NodeNewProject';
 import ICreateOption from '../interface/ICreateOption';
-import {NewProjectType} from '../type';
+import {BaseModuleOption, NewProjectType} from '../type';
 import VueNewProject from '../project/VueNewProject';
 import message from '../utils/Message';
 import CreatInquirer from '../inquirer/CreatInquirer';
@@ -12,6 +12,8 @@ import IBaseTemplate from '../interface/IBaseTemplate';
 import Github from '../utils/Github';
 import {PackageManager} from '../utils/PackageManager';
 import GitHub from '../utils/Github';
+import IBaseModule from '../interface/IBaseModule';
+import * as ora from 'ora';
 
 /**
  * @file: 构建项目类
@@ -45,7 +47,7 @@ export default class Create {
   merge: boolean;
 
   // 项目的远程地址
-  gitUrlAndBranch: string | undefined;
+  gitUrlAndBranch: string;
 
 
   /**
@@ -68,7 +70,7 @@ export default class Create {
 
     this.force = createOption.force;
     this.merge = createOption.merge;
-    this.gitUrlAndBranch = createOption.gitUrlAndBranch;
+    this.gitUrlAndBranch && (this.gitUrlAndBranch = createOption.gitUrlAndBranch);
     this.type = type;
 
 
@@ -94,10 +96,11 @@ export default class Create {
 
     const baseTemplate: IBaseTemplate = await this.newProject.selectBaseTemplate();
 
-    let modules: Array<string> = [];
+    let modules: Array<BaseModuleOption> = [];
     if (baseTemplate.type === 'BASE_COM') {
       modules = await this.newProject.selectBaseModule();
     }
+
     // 拉取远程
     await this.github.githubDownload(baseTemplate.path, this.inCurrent ? '.' : this.newProject.newProjectName);
 
@@ -123,7 +126,6 @@ export default class Create {
     if (this.gitUrlAndBranch) {
       await this.github.associatedEewRepository(this.gitUrlAndBranch);
     }
-
   }
 
   /**
@@ -182,12 +184,20 @@ export default class Create {
    * @param modules
    * @private
    */
-  private async addModuleToProject(modules: Array<string>) {
-    for (let i = 0; i < modules.length; i++) {
-      const relativePaths = path.relative(__dirname, path.resolve(path.resolve(__dirname, '../../'), modules[i]));
-      let module = await import(relativePaths);
-      await new module.default().install();
+  private async addModuleToProject(modules: Array<BaseModuleOption>) {
+    const downloadTemplate:ora.Ora = ora();
+    if(modules.length > 0){
+      message.info('开始加载自选模块');
+      downloadTemplate.start('拉取远程模板中... \n');
     }
+    for (let i = 0; i < modules.length; i++) {
+      const m: BaseModuleOption = modules[i];
+      const relativePaths = path.relative(__dirname, path.resolve(path.resolve(__dirname, '../../'), modules[i].value));
+      const {default: ModuleClass} = await import(relativePaths);
+      const M: IBaseModule = new ModuleClass(m);
+      M.install && (await M.install(this.packageManager, this.newProject.newProjectPath));
+    }
+    downloadTemplate.stop();
   }
 
 

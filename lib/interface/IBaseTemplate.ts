@@ -1,6 +1,6 @@
-import IBaseModule from './IBaseModule';
-
-export default interface IBaseTemplate extends IBaseModule {
+export default interface IBaseTemplate {
+  name: string,
+  value: string,
   // 下载地址
   path: string;
   // 下载类型

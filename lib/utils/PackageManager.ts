@@ -59,6 +59,19 @@ export class PackageManager {
   }
 
   /**
+   * 安装npm依赖
+   * @param moduleName 包的名称
+   * @param version 包的版本
+   * @param cwd npm 执行路径
+   * @constructor
+   */
+  async InstallationModuleByModuleName(moduleName: string, version: string, cwd?: string) {
+    await execa('npm', ['install', `${moduleName}${version ? `@${version}` : ''}`], {
+      cwd: cwd || this.cwd,
+    });
+  }
+
+  /**
    * 返回npm包的版本信息
    * @param packageName
    *
