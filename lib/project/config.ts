@@ -27,8 +27,9 @@ export const baseModuleList: Array<BaseModuleOption> = [
   {
     name: '动态路由模块',
     value: 'lib/module/dynamicRouterModule/index',
-    moduleType: 'file',
-    projectPath: 'src/router/dynamicRouter',
+    moduleType: 'npm',
+    npmName: 'gld-dynamic-routing',
+    version: '1.0.0',
   }, {
     name: 'api缓存模块',
     value: 'lib/module/apiCacheModule/index',
