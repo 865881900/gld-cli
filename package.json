@@ -4,10 +4,12 @@
   "description": "",
   "main": "bin/index.ts",
   "scripts": {
-    "dev": "sudo npm uni gld-cli -g && sudo npm i ./ -g"
+    "test": "mocha test/scaffold-test.js --timeout 3000000000",
+    "dev": "sudo npm uni gld-cli -g && sudo npm i ./ -g",
+    "tsc": "tsc && node tsc.js"
   },
   "bin": {
-    "gld-cli": "bin/index.ts"
+    "gld-cli": "dist/bin/index.js"
   },
   "keywords": [],
   "author": "",

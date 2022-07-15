@@ -1,7 +1,9 @@
 import {Command, Option} from 'commander';
 import * as minimist from 'minimist';
+import * as path from 'path';
 import message from './utils/Message';
 import Create from './create/Create';
+
 
 /**
  * @file: 脚手架类
@@ -17,9 +19,7 @@ export default class Scaffold {
   }
 
   run(): void {
-    console.log('初始化脚手架命令');
     this.initGldCli();
-    console.log('初始化vue命令');
     this.initGldCli_vue();
     this.program.parse();
   }
@@ -32,7 +32,9 @@ export default class Scaffold {
       .name('gld-cli')
       .description('前端脚手架')
       .usage('<command> [options]')
-      .version(`gld-cli ${require('../package.json').version}`);
+      .version(`gld-cli ${require(path.resolve('package.json')).version}`);
+
+
   }
 
 

@@ -1,6 +1,6 @@
 import IBaseTemplate from './IBaseTemplate';
 import {ProjectInquirer} from '../inquirer/ProjectInquirer';
-import Github from '../utils';
+import Github from '../utils/Github';
 
 /**
  * @file: 构建项目接口
