@@ -4,7 +4,7 @@
  * @update: 2022/7/13 4:44 PM
  */
 import {IProjectModuleType} from '../type';
-import {PackageManager} from '../utils/PackageManager';
+import {PackageManager} from '../../utils/PackageManager';
 
 export default interface IBaseModule {
   // 模块描述

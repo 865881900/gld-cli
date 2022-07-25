@@ -1,12 +1,13 @@
 {
   "name": "gld-cli",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "",
   "main": "bin/index.ts",
   "scripts": {
     "test": "mocha test/scaffold-test.js --timeout 3000000000",
     "dev": "sudo npm uni gld-cli -g && sudo npm i ./ -g",
-    "tsc": "tsc && node tsc.js"
+    "tsc": "tsc && node tsc.js",
+    "api": "ts-node lib/createAPIDocument/test.ts"
   },
   "bin": {
     "gld-cli": "dist/bin/index.js"
@@ -26,6 +27,7 @@
     "@types/validate-npm-package-name": "^4.0.0",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
+    "axios": "^0.27.2",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.5",
     "clean-webpack-plugin": "^4.0.0",

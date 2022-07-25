@@ -1,4 +1,4 @@
-import {PackageManager} from '../../utils/PackageManager';
+import {PackageManager} from '../../../utils/PackageManager';
 import IBaseModule from '../../interface/IBaseModule';
 import {BaseModuleOption, IProjectModuleType} from '../../type';
 import {copySync, openSync, writeSync} from 'fs-extra';

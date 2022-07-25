@@ -1,6 +1,6 @@
 import * as execa from 'execa';
 import {gte} from 'semver';
-import {PM} from '../type';
+import {PM} from '../createProject/type';
 import message from './Message';
 import * as ora from 'ora';
 

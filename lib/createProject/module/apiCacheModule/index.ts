@@ -1,6 +1,6 @@
 import IBaseModule from '../../interface/IBaseModule';
 import {BaseModuleOption, IProjectModuleType} from '../../type';
-import {PackageManager} from '../../utils/PackageManager';
+import {PackageManager} from '../../../utils/PackageManager';
 import {copySync} from 'fs-extra';
 import * as path from 'path';
 /**

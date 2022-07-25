@@ -2,7 +2,8 @@ import {Command, Option} from 'commander';
 import * as minimist from 'minimist';
 import * as path from 'path';
 import message from './utils/Message';
-import Create from './create/Create';
+import Create from './createProject/create/Create';
+import CreateAPI from './createAPIDocument/CreateAPI';
 
 
 /**
@@ -33,8 +34,6 @@ export default class Scaffold {
       .description('前端脚手架')
       .usage('<command> [options]')
       .version(`gld-cli ${require(path.resolve('package.json')).version}`);
-
-
   }
 
 
@@ -63,6 +62,47 @@ export default class Scaffold {
         try {
           const createProject = new Create(str, options, 'vue');
           createProject.create();
+        } catch (e) {
+          message.error(e.message);
+          process.exit(1);
+        }
+      });
+  }
+
+
+  /**
+   * 初始化生成api命令
+   * 参数:
+   * 解析类型: swagger | localFile | 后续再加
+   * 文件风格:  每个对象分为单独文件, 全部在一个js文件中
+   * 文件生成目录: 对项目当前node的相对路径
+   * 是否生成注解
+   * 是否调用前校验
+   * 接口函数名风格: 下划线| 大驼峰 | 小驼峰
+   *
+   */
+  initCreateAPI(): void {
+    this.program
+      .command('api')
+      .description('根据文档生成api文件,具有校验, 生成js功能')
+      .argument('analyticUrl <string>', '解析路径', '')
+      .addOption(new Option('-t, --analyticType <command>', '执行解析类型').choices(['swagger', 's', 'localFile', 'l']).default('swagger'))
+      .option('-d, --outputPathDirName', '解析路径', '/api')
+      .action((str, options) => {
+        console.log('projectName: ', str);
+        console.log('options: ', options);
+        // 提取命令行参数
+        const _ = minimist(process.argv.slice(3))._;
+        // 判断参数大小
+        if (_.length > 1) {
+          message.warning(`多个参数时,使用第一个参数:'${_[0]}', 将作为解析地址，其余的将被忽略。`);
+        }
+        try {
+          const createProject = new CreateAPI({
+            analyticUrl: str,
+            ...options
+          });
+          createProject.run();
         } catch (e) {
           message.error(e.message);
           process.exit(1);

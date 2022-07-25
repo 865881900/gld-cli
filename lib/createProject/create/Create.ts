@@ -6,12 +6,12 @@ import {pathExistsSync, readdirSync, readJSONSync, removeSync, writeJsonSync} fr
 import ICreateOption from '../interface/ICreateOption';
 import {BaseModuleOption, NewProjectType} from '../type';
 import VueNewProject from '../project/VueNewProject';
-import message from '../utils/Message';
+import message from '../../utils/Message';
 import CreatInquirer from '../inquirer/CreatInquirer';
 import IBaseTemplate from '../interface/IBaseTemplate';
-import Github from '../utils/Github';
-import {PackageManager} from '../utils/PackageManager';
-import GitHub from '../utils/Github';
+import Github from '../../utils/Github';
+import {PackageManager} from '../../utils/PackageManager';
+import GitHub from '../../utils/Github';
 import IBaseModule from '../interface/IBaseModule';
 import * as ora from 'ora';
 

@@ -38,3 +38,6 @@ gld-cli vue .
 | -gub, --gitUrlAndBranch | 项目需要关联的git仓库地址, 如果要指定分支,使用#分隔; 示例: https://github.com/***/**.git#master |
 
 
+## 3: 模块
+##### api前端缓存模块
+##### 动态路由/动态菜单栏模块
