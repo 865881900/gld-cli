@@ -10,7 +10,7 @@ export type CreateAPIAnalyticType = 'swagger' | 's' | 'localFile' | 'l';
  * expanding: 所有的接口在一个文件中输出
  * module: 按照模块形式输出
  */
-export type FileOutletType = 'module' | 'expanding';
+export type FileOutletType = 'module' | 'expanding' | 'm' | 'e';
 
 
 

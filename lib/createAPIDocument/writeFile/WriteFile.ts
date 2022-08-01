@@ -19,12 +19,14 @@ export default class WriteFile {
 
   protected _apiList: Array<string> = [];
 
+  protected rootPath: string;
 
   constructor(writerDirPath: string, isVerify?: boolean, functionNameStyle?: FunctionNameStyle, isGeneratedComments?: boolean) {
     this.writerDirPath = writerDirPath;
     this.isVerify = isVerify || false;
     this.functionNameStyle = functionNameStyle || 'lcc';
     this.isGeneratedComments = isGeneratedComments || true;
+    this.rootPath = process.cwd();
   }
 
 
@@ -38,7 +40,7 @@ export default class WriteFile {
 
   /**
    * 生成模块
-   * @param IApiData
+   * @param apiDataMap
    */
   joinModuleString(apiDataMap: IApiDataMap): string {
     this._apiList = [];
@@ -93,14 +95,15 @@ export default class WriteFile {
     }).join(this.functionNameStyle === 'u_c' ? '_' : '');
 
 
-    return `\n    /**\n     * ${apiData.description}${this.joinComments(apiData.parameters)} \n     */
-    ${moduleName ? `${moduleName}_` : ''}${apiName}: async function (data) {
-      return axios.${apiData.methods}('${apiData.path}', data, {
-        headers: {
-          'content-type': '${apiData.consumes}'
-        }
-      });
-    }, \n`;
+    return`  /**${apiData.description ?`\n   * ${apiData.description}`: ''}${this.joinComments(apiData.parameters)}
+   */
+  ${moduleName ? `${moduleName}_` : ''}${apiName}: async function (data) {
+    return axios.${apiData.methods}('${apiData.path}', data, {
+      headers: {
+        'content-type': '${apiData.consumes}'
+      }
+    });
+  }`;
   }
 
   /**
@@ -109,7 +112,7 @@ export default class WriteFile {
    */
   joinComments(parameters: Array<IApiParameters>): string {
     return parameters.filter(item => item.description).map(item => {
-      return `\n     * @param ${item.name}[${item.type}]:${item.description}`;
+      return `\n   * @param data.${item.name}[${item.type}]:${item.description}`;
     }).join('');
   }
 

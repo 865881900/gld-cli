@@ -34,7 +34,7 @@ export default class CreateAPI {
   analyticUrl: string;
 
   // 生成文件类型
-  fileOutletType: FileOutletType = 'module';
+  fileOutletType: FileOutletType;
 
   // 解析文件对象
   parseFile: IParseFile;
@@ -46,7 +46,7 @@ export default class CreateAPI {
   constructor(createAPIOption: ICreateAPIOption) {
     this.analyticType = createAPIOption.analyticType;
     this.analyticUrl = createAPIOption.analyticUrl;
-    this.fileOutletType = createAPIOption.fileOutletType || 'module';
+    this.fileOutletType = createAPIOption.fileOutletType;
 
     switch (this.analyticType) {
       case 'swagger':
@@ -58,8 +58,7 @@ export default class CreateAPI {
         // this.parseFile = new LocalFileParseFile();
         break;
     }
-
-    if (this.fileOutletType === 'module') {
+    if (this.fileOutletType === 'module' || this.fileOutletType === 'm') {
       this.writeFile = new WriteFileModule(
         createAPIOption.outputPathDirName,
         createAPIOption.requestBeforeIsVerify,

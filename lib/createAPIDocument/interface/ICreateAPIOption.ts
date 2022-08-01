@@ -16,7 +16,7 @@ export default interface ICreateAPIOption {
   outputPathDirName: string;
 
   // 生成文件输出口:
-  fileOutletType?: FileOutletType;
+  fileOutletType: FileOutletType;
 
   // 生成函数风格
   functionNameStyle?: FunctionNameStyle;

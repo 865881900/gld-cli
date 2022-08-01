@@ -22,6 +22,7 @@ export default class Scaffold {
   run(): void {
     this.initGldCli();
     this.initGldCli_vue();
+    this.initCreateAPI();
     this.program.parse();
   }
 
@@ -85,12 +86,14 @@ export default class Scaffold {
     this.program
       .command('api')
       .description('根据文档生成api文件,具有校验, 生成js功能')
-      .argument('analyticUrl <string>', '解析路径', '')
+      .argument('analyticUrl <string>', '解析路径')
       .addOption(new Option('-t, --analyticType <command>', '执行解析类型').choices(['swagger', 's', 'localFile', 'l']).default('swagger'))
-      .option('-d, --outputPathDirName', '解析路径', '/api')
+      .addOption(new Option('-f, --fileOutletType <command>', '文件输出类型').choices(['module', 'expanding', 'm', 'e']).default('module'))
+      .option('-o, --outputPathDirName <string>', '解析路径', 'src/api')
       .action((str, options) => {
-        console.log('projectName: ', str);
-        console.log('options: ', options);
+
+        console.log(str, options);
+
         // 提取命令行参数
         const _ = minimist(process.argv.slice(3))._;
         // 判断参数大小
