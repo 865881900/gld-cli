@@ -58,6 +58,8 @@ export default class CreateAPI {
         // this.parseFile = new LocalFileParseFile();
         break;
     }
+
+    console.log(this.fileOutletType);
     if (this.fileOutletType === 'module' || this.fileOutletType === 'm') {
       this.writeFile = new WriteFileModule(
         createAPIOption.outputPathDirName,

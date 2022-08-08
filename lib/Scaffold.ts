@@ -90,6 +90,7 @@ export default class Scaffold {
       .addOption(new Option('-t, --analyticType <command>', '执行解析类型').choices(['swagger', 's', 'localFile', 'l']).default('swagger'))
       .addOption(new Option('-f, --fileOutletType <command>', '文件输出类型').choices(['module', 'expanding', 'm', 'e']).default('module'))
       .option('-o, --outputPathDirName <string>', '解析路径', 'src/api')
+      .option('-v, --requestBeforeIsVerify', '是否校验参数类型', false)
       .action((str, options) => {
 
         console.log(str, options);

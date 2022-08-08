@@ -6,7 +6,7 @@ import IApiParameters from '../interface/IApiParameters';
 
 export default class SwaggerParseFile implements IParseFile {
   apiDataMap: Map<string, IApiDataMap>;
-
+  types: Array<string> = [];
   apiDataList: Array<IApiData>;
   private static METHODS_LIST: Array<string> =
     ['get', 'GET', 'delete', 'DELETE', 'head', 'HEAD', 'options', 'OPTIONS', 'post', 'POST', 'put', 'PUT', 'patch', 'PATCH', 'purge', 'PURGE', 'link', 'LINK', 'unlink', 'UNLINK'];
@@ -20,11 +20,13 @@ export default class SwaggerParseFile implements IParseFile {
     if (!/^(http:\/\/)|(https:\/\/)/.test(analyticUrl)) {
       throw new Error('analyticUrl 不是一个有效的网络地址');
     }
-    const {tags, paths} = await this.getJsonByAnalyticUrl(analyticUrl);
+    const {tags, paths} = await SwaggerParseFile.getJsonByAnalyticUrl(analyticUrl);
 
     this.apiDataList = this.createApiDataAll(paths);
 
     this.apiDataMap = this.createIApiDataMapAll(tags, this.apiDataList);
+
+    console.log(this.types.join(','));
   }
 
   // 创建ApiDataMap
@@ -75,7 +77,7 @@ export default class SwaggerParseFile implements IParseFile {
   }
 
   // 根据url,返回接口文档json
-  private async getJsonByAnalyticUrl(analyticUrl: string) {
+  static async getJsonByAnalyticUrl(analyticUrl: string) {
     // 开始请求接口
     const {status, data} = await axios.get(analyticUrl);
     if (status !== 200) {
@@ -117,10 +119,10 @@ export default class SwaggerParseFile implements IParseFile {
       // 解析参数
       parameters = this.genApiParameters(pathItemData.parameters || []);
     } catch (e) {
-      console.log(pathKey);
+      console.error(`${pathKey}解析参数错误`);
     }
 
-    let apiIApiData: IApiData = {
+    return  {
       tags: pathItemData.tags,
       methods,
       consumes,
@@ -133,7 +135,6 @@ export default class SwaggerParseFile implements IParseFile {
       // 是方否弃用
       deprecated: pathItemData.deprecated
     };
-    return apiIApiData;
   }
 
   /**
@@ -146,18 +147,6 @@ export default class SwaggerParseFile implements IParseFile {
     });
     return c.length > 0 ? c[0] : 'application/x-www-form-urlencoded';
 
-  }
-
-  /**
-   * 生成函数名
-   * @param apiPath
-   */
-  private genApiName(apiPath: string): string {
-    const name = apiPath.split('/').filter(item => item !== '').pop();
-    if (!name) {
-      throw new Error(`${apiPath}函数名称解析失败`);
-    }
-    return name;
   }
 
   /**
@@ -181,8 +170,16 @@ export default class SwaggerParseFile implements IParseFile {
         description: item.description
 
       };
+
+    if(!this.types.includes(item.type)){
+        this.types.push(item.type);
+    }
+
       if (item.items && item.items.type) {
         apiParameters.arrayItemType = item.items.type;
+        if(!this.types.includes(item.items.type)){
+          this.types.push(item.items.type);
+        }
       }
       if (item.enum) {
         apiParameters.enum = item.enum;
@@ -191,6 +188,9 @@ export default class SwaggerParseFile implements IParseFile {
     });
     return list;
   }
+
+
+
 }
 
 

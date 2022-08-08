@@ -2,14 +2,16 @@ import IApiDataMap from '../interface/IApiDataMap';
 import IApiParameters from '../interface/IApiParameters';
 import IApiData from '../interface/IApiData';
 import {FunctionNameStyle} from '../type';
-import {createWriteStream, existsSync, mkdirSync, rmSync} from 'fs-extra';
+import {copySync, createWriteStream, existsSync, mkdirSync, rmSync} from 'fs-extra';
+import * as path from 'path';
+import {Method} from 'axios';
 
 export default class WriteFile {
   // 文件写入文件夹
   writerDirPath: string;
 
   // 是否需要请求前校验
-  isVerify?: boolean;
+  isVerify: boolean;
 
   // 函数风格
   functionNameStyle?: FunctionNameStyle;
@@ -19,11 +21,15 @@ export default class WriteFile {
 
   protected _apiList: Array<string> = [];
 
+  // 当前项目的路径
   protected rootPath: string;
 
-  constructor(writerDirPath: string, isVerify?: boolean, functionNameStyle?: FunctionNameStyle, isGeneratedComments?: boolean) {
+  // 校验文件的路径
+  protected validatePath: string;
+
+  constructor(writerDirPath: string, isVerify: boolean, functionNameStyle?: FunctionNameStyle, isGeneratedComments?: boolean) {
     this.writerDirPath = writerDirPath;
-    this.isVerify = isVerify || false;
+    this.isVerify = isVerify;
     this.functionNameStyle = functionNameStyle || 'lcc';
     this.isGeneratedComments = isGeneratedComments || true;
     this.rootPath = process.cwd();
@@ -34,8 +40,9 @@ export default class WriteFile {
    *
    * @param apiDataMap 模块的数据
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   beganWrite(apiDataMap: Map<string, IApiDataMap>): void {
-    console.log(apiDataMap);
+    // console.log(apiDataMap);
   }
 
   /**
@@ -95,9 +102,9 @@ export default class WriteFile {
     }).join(this.functionNameStyle === 'u_c' ? '_' : '');
 
 
-    return`  /**${apiData.description ?`\n   * ${apiData.description}`: ''}${this.joinComments(apiData.parameters)}
+    return `  /**${apiData.description ? `\n   * ${apiData.description}` : ''}${this.joinComments(apiData.parameters)}
    */
-  ${moduleName ? `${moduleName}_` : ''}${apiName}: async function (data) {
+  ${moduleName ? `${moduleName}_` : ''}${apiName}: function (data) {${apiData.deprecated ? `\n  console.warn(\`${apiData.path}接口已弃用\`);` : ''}${this.isVerify ? this.addValidateFunction(apiData.parameters, apiData.path, apiData.methods) : ''}
     return axios.${apiData.methods}('${apiData.path}', data, {
       headers: {
         'content-type': '${apiData.consumes}'
@@ -112,7 +119,7 @@ export default class WriteFile {
    */
   joinComments(parameters: Array<IApiParameters>): string {
     return parameters.filter(item => item.description).map(item => {
-      return `\n   * @param data.${item.name}[${item.type}]:${item.description}`;
+      return `\n   * ${item.required ? '@必填' :'@param'} data.${item.name}<${item.type}>:${item.description}`;
     }).join('');
   }
 
@@ -193,5 +200,20 @@ export default class WriteFile {
     const w = createWriteStream(filePath);
     w.write(context);
     w.end();
+  }
+
+  /**
+   * 生成校验函数体
+   * @param
+   */
+  createValidationFunctions() {
+    this.validatePath = path.join(this.rootPath, this.writerDirPath, 'validate.js');
+    // copy校验文件到项目下;
+    copySync(path.resolve(__dirname, '../validate/index.js'), this.validatePath);
+  }
+
+  // 给函数添加校验函数
+  addValidateFunction(parameters: Array<IApiParameters>, apiDataPath, methods: Method) {
+    return `\n    if(!validateParameter(data, ${JSON.stringify(parameters)}, '${apiDataPath}', '${methods}')) return;`;
   }
 }

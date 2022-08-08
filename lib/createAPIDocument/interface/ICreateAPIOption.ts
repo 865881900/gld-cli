@@ -18,14 +18,15 @@ export default interface ICreateAPIOption {
   // 生成文件输出口:
   fileOutletType: FileOutletType;
 
+  // 发起http请求前, 是否校验参数类型
+  requestBeforeIsVerify: boolean;
+
   // 生成函数风格
   functionNameStyle?: FunctionNameStyle;
 
   // 是否生成注释
   isGeneratedComments?: boolean;
 
-  // 发起http请求前, 是否校验参数类型
-  requestBeforeIsVerify?: boolean;
 
 }
 

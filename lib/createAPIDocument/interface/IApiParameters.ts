@@ -5,18 +5,17 @@
  */
 export default interface IApiParameters {
   // 参数名称
-  name: string
+  name: string;
   // 传参位置
-  in: string
+  in: string;
   // 是否必传
-  required: false
+  required: false;
   // 参数类型
-  type: string
-
-  description?:string
-
+  type: string;
+  // 参数说明
+  description?: string;
   // 如果参数类型是array, 这是他的子类型
-  arrayItemType?: string
+  arrayItemType?: string;
   // 如果该参数存在,则该参数为枚举类型;
-  enum?: Array<any>
+  enum?: Array<any>;
 }

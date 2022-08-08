@@ -17,6 +17,10 @@ export default class WriteFileModule extends WriteFile {
 
   // 开始执行
   beganWrite(apiDataMap: Map<string, IApiDataMap>): void {
+
+    // 引入校验文件
+    this.isVerify && this.createValidationFunctions();
+
     // 创建改模块的根文件夹
     this.createRootDir(path.join(this.rootPath, this.writerDirPath));
 
@@ -25,11 +29,13 @@ export default class WriteFileModule extends WriteFile {
     this.writeModulesFile(apiDataList);
 
     this.writeMainFile(apiDataList);
+
+
   }
 
   //写入出口main文件
   writeMainFile(moduleList: Array<IApiDataMap>) {
-    const mainPath = path.join(this.rootPath,this.writerDirPath, 'index.js');
+    const mainPath = path.join(this.rootPath, this.writerDirPath, 'index.js');
     let moduleName;
     const context = moduleList.map(item => {
       moduleName = this.generateModuleName(Array.from(item.apiMap.values()));
@@ -44,7 +50,7 @@ export const ${moduleName} = import('./modules/${moduleName}.js');\n`;
   writeModulesFile(moduleList: Array<IApiDataMap>) {
     const moduleDir = path.join(this.writerDirPath, WriteFileModule.MODULE_DIR_NAME);
     //相对路径,相对已axios模块
-    const moduleAxiosPath = path.relative( path.join(process.cwd(), moduleDir), path.join(process.cwd(), 'src/http'));
+    const moduleAxiosPath = path.relative(path.join(process.cwd(), moduleDir), path.join(process.cwd(), 'src/http'));
     // 创建存储模块的文件夹
     this.createRootDir(path.join(this.rootPath, moduleDir));
     let moduleStr;
@@ -53,26 +59,27 @@ export const ${moduleName} = import('./modules/${moduleName}.js');\n`;
     for (let i = 0; i < moduleList.length; i++) {
       moduleName = this.generateModuleName(Array.from(moduleList[i].apiMap.values()));
       this.modulePathList.push(moduleName);
-      moduleStr = this.jsonModuleString(moduleAxiosPath, moduleList[i]);
-      moduleItemPath = path.join(this.rootPath,moduleDir, this.modulePathList[i] + '.js');
+      moduleItemPath = path.join(this.rootPath, moduleDir, this.modulePathList[i] + '.js');
+      moduleStr = this.jsonModuleString(moduleAxiosPath, moduleList[i], path.join(this.rootPath, moduleDir));
       this.action(moduleItemPath, moduleStr);
     }
   }
 
   /**
-   *
+   * 拼接模块
    * @param moduleAxiosPath 该模块保存位置
    * @param apiDataMap 该模块的信息
+   * @param moduleItemPath 模块的路径
    */
-  jsonModuleString(moduleAxiosPath, apiDataMap: IApiDataMap): string {
+  jsonModuleString(moduleAxiosPath, apiDataMap: IApiDataMap, moduleItemPath: string): string {
     const apiList = Array.from(apiDataMap.apiMap.values());
     this._apiList = [];
-
     return `import { axios } from '${moduleAxiosPath}';
+    ${this.isVerify ? `\n import { validateParameter } from '${path.relative(moduleItemPath, this.validatePath)}';` : ''}
 export default {
 ${apiList.map(item => {
       return this.joinFunctionString(item);
-}).join(',\n')}
+    }).join(',\n')}
 };
 `;
   }

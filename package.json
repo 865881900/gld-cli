@@ -5,12 +5,13 @@
   "main": "bin/index.ts",
   "scripts": {
     "test": "mocha test/scaffold-test.js --timeout 3000000000",
-    "dev": "sudo npm uni gld-cli -g && sudo npm i ./ -g",
+    "testApi": "node t.js",
+    "ins": "sudo npm uni gld-cli -g && sudo npm i ./ -g",
     "tsc": "tsc && node tsc.js",
     "api": "ts-node lib/createAPIDocument/test.ts"
   },
   "bin": {
-    "gld-cli": "dist/bin/index.js"
+    "gld-cli": "bin/index.ts"
   },
   "keywords": [],
   "author": "",
