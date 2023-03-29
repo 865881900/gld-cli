@@ -4,8 +4,8 @@ const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 
 module.exports = {
   entry: {
-    index: './cache/controlCache.ts',
-    'index.min': './cache/controlCache.ts',
+    index: './dist/bin/index.js',
+    'index.min': './dist/bin/index.js',
   },
   mode: 'none',
   module: {

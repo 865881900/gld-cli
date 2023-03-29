@@ -59,7 +59,6 @@ export default class CreateAPI {
         break;
     }
 
-    console.log(this.fileOutletType);
     if (this.fileOutletType === 'module' || this.fileOutletType === 'm') {
       this.writeFile = new WriteFileModule(
         createAPIOption.outputPathDirName,

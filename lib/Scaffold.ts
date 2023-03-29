@@ -4,6 +4,7 @@ import * as path from 'path';
 import message from './utils/Message';
 import Create from './createProject/create/Create';
 import CreateAPI from './createAPIDocument/CreateAPI';
+import { CreateVuePate } from './createVuePage';
 
 
 /**
@@ -21,8 +22,9 @@ export default class Scaffold {
 
   run(): void {
     this.initGldCli();
-    this.initGldCli_vue();
+    this.initCreateVueApp();
     this.initCreateAPI();
+    this.initAutoCreatVuePages()
     this.program.parse();
   }
 
@@ -31,17 +33,17 @@ export default class Scaffold {
    */
   initGldCli(): void {
     this.program
-      .name('gld-cli')
+      .name('my-cli')
       .description('前端脚手架')
       .usage('<command> [options]')
-      .version(`gld-cli ${require(path.resolve('package.json')).version}`);
+      .version(`my-cli ${require(path.resolve(__dirname,'../../package.json')).version}`);
   }
 
 
   /**
-   * 初始化vue命令
+   * 初始化vue项目
    */
-  initGldCli_vue(): void {
+  initCreateVueApp(): void {
     this.program
       .command('vue')
       .description('构建vue项目')
@@ -62,14 +64,15 @@ export default class Scaffold {
         }
         try {
           const createProject = new Create(str, options, 'vue');
-          createProject.create();
+          createProject.create().catch((e) => {
+            message.error(e.message);
+          });
         } catch (e) {
           message.error(e.message);
           process.exit(1);
         }
       });
   }
-
 
   /**
    * 初始化生成api命令
@@ -92,9 +95,7 @@ export default class Scaffold {
       .option('-o, --outputPathDirName <string>', '解析路径', 'src/api')
       .option('-v, --requestBeforeIsVerify', '是否校验参数类型', false)
       .action((str, options) => {
-
         console.log(str, options);
-
         // 提取命令行参数
         const _ = minimist(process.argv.slice(3))._;
         // 判断参数大小
@@ -107,6 +108,28 @@ export default class Scaffold {
             ...options
           });
           createProject.run();
+        } catch (e) {
+          message.error(e.message);
+          process.exit(1);
+        }
+      });
+  }
+
+  /**
+   * 自动生成程序
+   * @param post:Sting 服务端口
+   */
+  initAutoCreatVuePages(): void{
+    // 可视化项目的端口
+    this.program
+      .command('page')
+      .description('自动生成vau页面')
+      .option('-p, --post <string>', '服务端口,默认为9999', false)
+      .addOption(new Option('-u, --ui <ui...>', '需要支持的ui').choices(['gld', 'element']).default(['element']))
+      .action((str) => {
+        try {
+          const createVuePate = new CreateVuePate(str.post, str.ui, process.cwd());
+          createVuePate.run()
         } catch (e) {
           message.error(e.message);
           process.exit(1);

@@ -1,0 +1,14 @@
+/node_modules/**
+/dist/*
+/public/*
+**/*.svg
+**/*.sh
+*.md
+*.woff
+*.ttf
+.vscode
+.idea
+.husky
+.npmrc
+.env-cmdrc
+*.txt

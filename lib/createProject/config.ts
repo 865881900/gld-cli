@@ -1,5 +1,5 @@
-import IBaseTemplate from '../interface/IBaseTemplate';
-import {BaseModuleOption} from '../type';
+import IBaseTemplate from './interface/IBaseTemplate';
+import {BaseModuleOption} from './type';
 
 export const baseTemplateList: Array<IBaseTemplate> = [
   {

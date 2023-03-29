@@ -92,8 +92,11 @@ export default class Create {
    */
   async create(): Promise<void> {
     message.info('✨ 开始创建项目');
+
+    // 对创建项目的文件夹进行操作
     await this.operationFolder();
 
+    // 学则模板
     const baseTemplate: IBaseTemplate = await this.newProject.selectBaseTemplate();
 
     let modules: Array<BaseModuleOption> = [];
@@ -135,13 +138,16 @@ export default class Create {
   private async operationFolder(): Promise<void> {
     const {newProjectName, newProjectPath} = this.newProject;
     const {merge, force, inCurrent, creatInquirer} = this;
+    // 是否为一个有效的路径 并且不打算合并
     if (pathExistsSync(newProjectPath) && !merge) {
       if (force && inCurrent) {
+        // 提示是否确认在当前目录下创建项目
         const {isOk} = await creatInquirer.deleteDirectory(newProjectName);
         if (!isOk) {
           process.exit(1);
           return;
         }
+        // 获取当前文件夹下所有文件, 并遍历删除他们
         const fileNameList: Array<string> = readdirSync(newProjectPath);
         fileNameList.forEach((itemPath) => {
           removeSync(path.join(newProjectPath, itemPath));

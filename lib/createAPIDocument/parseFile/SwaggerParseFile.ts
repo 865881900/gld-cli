@@ -36,7 +36,7 @@ export default class SwaggerParseFile implements IParseFile {
     for (let i = 0; i < tags.length; i++) {
       apiDataMap.set(tags[i].name, {
         tag: tags[i].name,
-        apiMap: new Map<string, IApiData>
+        apiMap: new Map<string, IApiData>()
       });
     }
 
@@ -122,7 +122,7 @@ export default class SwaggerParseFile implements IParseFile {
       console.error(`${pathKey}解析参数错误`);
     }
 
-    return  {
+    return {
       tags: pathItemData.tags,
       methods,
       consumes,
@@ -171,13 +171,13 @@ export default class SwaggerParseFile implements IParseFile {
 
       };
 
-    if(!this.types.includes(item.type)){
+      if (!this.types.includes(item.type)) {
         this.types.push(item.type);
-    }
+      }
 
       if (item.items && item.items.type) {
         apiParameters.arrayItemType = item.items.type;
-        if(!this.types.includes(item.items.type)){
+        if (!this.types.includes(item.items.type)) {
           this.types.push(item.items.type);
         }
       }
@@ -188,7 +188,6 @@ export default class SwaggerParseFile implements IParseFile {
     });
     return list;
   }
-
 
 
 }

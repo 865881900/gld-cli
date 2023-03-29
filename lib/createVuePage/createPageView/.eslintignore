@@ -1,0 +1,15 @@
+/node_modules
+/dist
+/build
+/public
+/server
+**/*.svg
+**/*.sh
+*.md
+*.woff
+*.ttf
+.vscode
+.idea
+.husky
+vue.webpack.config.js
+test

@@ -1,7 +1,7 @@
 import IBaseTemplate from '../interface/IBaseTemplate';
 import {ProjectInquirer} from '../inquirer/ProjectInquirer';
 
-import {baseModuleList, baseTemplateList} from './config';
+import {baseModuleList, baseTemplateList} from '../config';
 import {BaseModuleOption} from '../type';
 
 
@@ -30,7 +30,7 @@ export default class VueNewProject {
 
 
   /**
-   * 选择基础模块
+   * 选择vue基础模块
    * @implements INewProject.selectBaseTemplate
    * @return 选择的基础模板信息
    */

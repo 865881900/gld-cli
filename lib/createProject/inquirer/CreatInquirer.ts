@@ -1,6 +1,9 @@
 import * as inquirer from 'inquirer';
 import {Inquirer} from 'inquirer';
 
+/**
+ * 控制台 交互类
+ */
 export default class CreatInquirer {
   private inquirer: Inquirer;
 
@@ -21,7 +24,7 @@ export default class CreatInquirer {
   }
 
   /**
-   * 当文件存在是,选择对该文件夹的操作
+   * 当文件存在是时,选择对该文件夹的操作
    * 覆盖, 合并, 退出
    * @param dirName 需要操作的文件夹名称
    */
