@@ -9,7 +9,7 @@
     "ins": "tsc && sudo npm uni my-cli -g && sudo npm i ./ -g",
     "tsc": "tsc && node tsc.js",
     "api": "ts-node lib/createAPIDocument/test.ts",
-    "t": "node ./test.js"
+    "test-ts": "ts-node ./test.ts"
   },
   "bin": {
     "my-cli": "./dist/bin/index.js"
@@ -18,6 +18,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/parser": "^7.21.4",
     "@babel/preset-env": "^7.18.0",
     "@types/execa": "^2.0.0",
     "@types/fs-extra": "^9.0.13",
@@ -50,6 +51,7 @@
     "glob-all": "^3.3.0",
     "inquirer": "^8.2.4",
     "install": "^0.13.0",
+    "lodash": "^4.17.21",
     "minimist": "^1.2.6",
     "mocha": "^10.0.0",
     "ora": "^5.1.0",
@@ -62,6 +64,7 @@
     "ts-node": "^10.8.1",
     "typescript": "^4.7.3",
     "validate-npm-package-name": "^4.0.0",
+    "vue": "^2.7.14",
     "vue-template-compiler": "^2.7.14",
     "webpack": "^4.31.0",
     "webpack-cli": "^3.3.2"

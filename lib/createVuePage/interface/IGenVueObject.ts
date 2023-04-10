@@ -1,8 +1,8 @@
 import { IGenProps } from './IGenProps';
 import { SFCDescriptor } from '@vue/component-compiler-utils';
 import { ISlots } from './ISlots';
-import { ComponentOptions } from '@vue/runtime-core';
-
+import { IComponentType } from '../enum';
+import { ComponentOptions } from 'vue';
 export interface IGenVueObject {
   // 组件的原文
   fileData: string;
@@ -12,14 +12,16 @@ export interface IGenVueObject {
   filePath: string,
   // 文件名称
   fileName: string;
-  // 组件名称
+  // 组件类型
   componentName: string,
+  // 组件名称
+  componentType: IComponentType,
   // 渲染组件的tag
   componentTag: string,
   // 组件说明
   componentNote?: string,
   // 解析后的vue选项
-  componentOption: ComponentOptions,
+  componentOption: ComponentOptions<any>,
 
   // 组件的props
   props?: Array<IGenProps>

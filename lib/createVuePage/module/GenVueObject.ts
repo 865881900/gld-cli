@@ -2,7 +2,8 @@ import { IGenVueObject } from '../interface/IGenVueObject';
 import { IGenProps } from '../interface/IGenProps';
 import { SFCDescriptor } from '@vue/component-compiler-utils';
 import { ISlots } from '../interface/ISlots';
-import { ComponentOptions } from '@vue/runtime-core';
+import { IComponentType } from '../enum';
+import { ComponentOptions } from 'vue';
 
 export class GenVueObject implements IGenVueObject{
   // 文件路径
@@ -110,13 +111,15 @@ export class GenVueObject implements IGenVueObject{
     this._fileDescriptor = value;
   }
 
-  private _componentOption: ComponentOptions;
+  private _componentOption:  ComponentOptions<any>;
 
-  get componentOption(): ComponentOptions {
+  get componentOption(): ComponentOptions<any> {
     return this._componentOption;
   }
 
-  set componentOption(value: ComponentOptions) {
+  set componentOption(value:  ComponentOptions<any>) {
     this._componentOption = value;
   }
+
+  componentType: IComponentType;
 }

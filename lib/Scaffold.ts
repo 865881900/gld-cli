@@ -129,7 +129,7 @@ export default class Scaffold {
       .action((str) => {
         try {
           const createVuePate = new CreateVuePate(str.post, str.ui, process.cwd());
-          createVuePate.run()
+          createVuePate.run();
         } catch (e) {
           message.error(e.message);
           process.exit(1);

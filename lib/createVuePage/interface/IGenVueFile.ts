@@ -1,7 +1,7 @@
 import { IGenVueObject } from './IGenVueObject';
 import { IGenProps } from './IGenProps';
 import { ISlots } from './ISlots';
-import { ComponentOptions } from '@vue/runtime-core';
+import { ComponentOptions } from 'vue';
 
 export interface IGenVueFile {
   /**
@@ -18,7 +18,7 @@ export interface IGenVueFile {
    * @param fileName vue组件的名称
    * @return 一个抽象的代表组件的数据结构
    */
-  genVueOption:(scriptString: string) =>  Promise<ComponentOptions>;
+  genVueOption:(scriptString: string) =>  Promise<ComponentOptions<any>>;
 
   /**
    * 解析js的代码, 并提取其中props

@@ -4,7 +4,6 @@
 
     // 输出目录路径
     "outDir": "./dist/",
-
     // 允许sourcemap支持
     "sourceMap": false,
     // 作为最佳实践，启用严格的空检查
@@ -12,7 +11,7 @@
     // 指定模块代码生成
     "module": "commonjs",
     //    "module": "es6",
-
+    //        "moduleResolution": "Classic",
     // 使用typescript将JSX转换为js
     //"jsx": "react",
     //"module": "CommonJS",
@@ -24,7 +23,8 @@
   //是不需要检查哪的文件来编译
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
+    "**/**/*.d.ts"
   ],
   //是需要检查哪的文件来编译
   "include": [

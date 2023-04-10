@@ -1,10 +1,10 @@
 export interface IGenProps{
-  // props描述
+  // props名称
   propName: string
   // 类型
-  propType: string | undefined,
-  // 选择
-  propOption: Array<string> | undefined
+  propType: Array<string>,
+  // 说明
+  componentNote?: string
   // 值
-  propValue: string
+  propValue?: string
 }
