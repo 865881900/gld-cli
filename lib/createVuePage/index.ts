@@ -1,13 +1,13 @@
-import * as execa from 'execa';
-import * as fs from 'fs-extra';
-import * as path from 'path';
+import * as execa from "execa";
+import * as fs from "fs-extra";
+import * as path from "path";
 
-import message from '../utils/Message';
-import { IComponentType, UIEnum } from './enum';
-import { GenVueFile } from './server/GenVueFile';
-import { ifVueFile } from '../utils';
-import { IFile } from './interface/IFile';
-import { IGenVueObject } from './interface/IGenVueObject';
+import message from "../utils/Message";
+import { IComponentType, UIEnum } from "./enum";
+import { GenVueFile } from "./server/GenVueFile";
+import { ifVueFile } from "../utils";
+import { MFile } from "./module/MFile";
+import { MGenVueObject } from "./module/MGenVueObject";
 
 export class CreateVuePate {
   // 本地vue端口, 默认9000
@@ -17,16 +17,16 @@ export class CreateVuePate {
   // 当前运行path
   private context: string;
   // 组件存放目录
-  private componentsPath: string;
+  private readonly componentsPath: string;
   // 当前cli程序运行的地址
-  private runPath: string;
+  private readonly runPath: string;
   // 处理vue组件程序
   ganVueFile: GenVueFile;
 
   // 组件file集合
-  private vueComponentList: Array<IFile> = [];
+  private vueComponentList: Array<MFile> = [];
   // 组件的Vue对象集合
-  private vueObjectList: Array<IGenVueObject> = [];
+  private vueObjectList: Array<MGenVueObject> = [];
 
 
   constructor(post: string, ui: Array<UIEnum>, context: string) {
@@ -35,56 +35,56 @@ export class CreateVuePate {
     this.ui = ui;
     this.context = context;
     this.runPath = process.cwd();
-    this.componentsPath = path.resolve(this.runPath, 'lib/createVuePage/createPageView/src/components');
+    this.componentsPath = path.resolve(this.runPath, "lib/createVuePage/createPageView/src/components");
   }
 
 
   // 执行
   public async run() {
-    message.success('开始执行');
+    message.success("开始执行");
     const isExists = fs.pathExists(this.componentsPath);
     if (!isExists) {
-      message.warning('components 不是一个目录');
+      message.warning("components 不是一个目录");
     }
-    message.success('私有解析组件中');
+    message.success("私有解析组件中");
     // 解析可视化编辑中的私有组件
     await this.genPrivateComponents();
-    message.success('解析page组件中');
+    message.success("解析page组件中");
     // 解析可视化编辑中的page组件
     await this.genPageComponents();
 
     // 解析算选择的UI框架 todo 下次实现
     // this.genUiComponents();
-    message.success('生成配置文件');
+    message.success("生成配置文件");
     // 生成组件JSON文件
     await this.createComponentJson();
-    message.success('启动可视化编辑');
+    message.success("启动可视化编辑");
     // 启动可视化编辑
     this.runVue();
-    message.success('启动成功');
+    message.success("启动成功");
     // 启动websocket
     this.runWebsocket();
   }
 
   // 解析vue组件
-  private async genVue(componentFileName: string, componentType: IComponentType) {
-    await this.gatherVueComponent(componentFileName);
-    for (let i = 0; i < this.vueComponentList.length; i++) {
-      let fileItem = this.vueComponentList[i];
-      const vueObject: IGenVueObject = await this.ganVueFile.genVue(fileItem.filePath, fileItem.fileName);
-      vueObject.componentType = componentType;
+  private async genVue(filePath: string, componentType: IComponentType) {
+    const componentList: Array<MFile> = [];
+    await this.gatherVueComponent(filePath, componentList);
+    for (let i = 0; i < componentList.length; i++) {
+      let { filePath, fileName } = componentList[i];
+      const vueObject: MGenVueObject = await this.ganVueFile.genVue(filePath, fileName, componentType);
       this.vueObjectList.push(vueObject);
     }
   }
 
   // 解析可视化编辑中的私有组件
   private genPrivateComponents() {
-    return this.genVue(path.join(this.componentsPath, 'private'), IComponentType.PRIVATE);
+    return this.genVue(path.join(this.componentsPath, "private"), IComponentType.PRIVATE);
   }
 
   // 解析page组件
   private genPageComponents() {
-    return this.genVue(path.join(this.componentsPath, 'page'), IComponentType.PRIVATE);
+    return this.genVue(path.join(this.componentsPath, "page"), IComponentType.PAGE);
   }
 
   // 解析算选择的UI框架中的组件
@@ -94,13 +94,13 @@ export class CreateVuePate {
 
   private async runVue() {
 
-    await execa('cross-env', ['ENV_NODE=development'], {
-      cwd: path.join(this.runPath, 'lib/createVuePage/createPageView'),
-    });
-
-    await execa('webpack', ['serve', '--config', './webpack/webpack.config.js'], {
-      cwd: path.join(this.runPath, 'lib/createVuePage/createPageView'),
-    });
+    // await execa("cross-env", ["ENV_NODE=development"], {
+    //   cwd: path.join(this.runPath, "lib/createVuePage/createPageView")
+    // });
+    //
+    // await execa("webpack", ["serve", "--config", "./webpack/webpack.config.js"], {
+    //   cwd: path.join(this.runPath, "lib/createVuePage/createPageView")
+    // });
   }
 
   private runWebsocket() {
@@ -108,20 +108,20 @@ export class CreateVuePate {
   }
 
   // 收集所有的组件文件信息
-  private async gatherVueComponent(filePath: string) {
+  private async gatherVueComponent(filePath: string, componentList: Array<MFile> = []): Promise<void> {
     try {
       // 获取文件的状态
       const stat = await fs.statSync(filePath);
       // 判断是是否为文件,并且只收集vue文件
       if (!stat.isDirectory()) {
-        ifVueFile(filePath) && this.vueComponentList.push({
+        ifVueFile(filePath) && componentList.push({
           filePath,
           fileName: path.basename(filePath)
         });
       } else {
         const fileList: Array<string> = fs.readdirSync(filePath);
         for (let i = 0; i < fileList.length; i++) {
-          await this.gatherVueComponent(path.join(filePath, fileList[i]));
+          await this.gatherVueComponent(path.join(filePath, fileList[i]), componentList);
         }
       }
     } catch (e) {
@@ -131,6 +131,6 @@ export class CreateVuePate {
 
   // 写入组件配置
   createComponentJson() {
-    fs.writeFileSync(path.join(this.componentsPath, 'components.json'), JSON.stringify(this.vueObjectList));
+    fs.writeFileSync(path.join(this.componentsPath, "components.json"), JSON.stringify(this.vueObjectList));
   }
 }

@@ -1,0 +1,5 @@
+1: 把template解析为不用whit的render函数;  以解决(使用vue-loader中的解析, 解析为正式不是的render函数);
+2: 解析vue的js部分; 以解决(判断ExportDefaultDeclaration, 把不属于其中的BlockStatement,全部是删除);
+3: 解决props声明时type混乱问题(使用vue的mergeOption函数解决)
+2,3问题最新优化:由于JSON化的时候, 对函数类型不能正常识别, 所以把这一步放在了vue端.使用eval进行解析;
+4: 处理拖入时, 初始化的问题,(使用劫持);

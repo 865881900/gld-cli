@@ -1,4 +1,4 @@
-export interface IFile {
+export interface MFile {
   // 文件名称
   fileName: string,
   // 文件路径

@@ -1,25 +1,38 @@
 <template>
   <div>
-    <div>你好</div>
+    <div @click="click">你好{{ a }}</div>
     <div>
-      <slot name="slot1"></slot>
-      <slot :slot:header="a"></slot>
+      <slot :name="aaaa"></slot>
+      <slot name="name2"></slot>
+      <slot></slot>
     </div>
   </div>
 </template>
 <script>
+
 export default {
-  name: 'Test',
-  data: () => ({
-    a: 12
-  }),
+  name: "test",
   props: {
-    title: {
-      type: [String],
-      default: '这是title',
-      note: '这是说明'
-    },
-    name: Number
+    p1: [String, Number],
+    p2: {
+      type: String,
+      default: '12'
+    }
+  },
+  data() {
+    return {
+      a: 12,
+      aaaa: "name1"
+    };
+  },
+  beforeCreate() {
+    console.log(11212);
+  },
+  methods: {
+    click() {
+      this.a++;
+    }
   }
+  
 };
 </script>

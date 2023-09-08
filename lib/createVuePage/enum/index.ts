@@ -8,7 +8,10 @@ export enum UIEnum {
 
 // 组件类型枚举
 export enum IComponentType {
-  PATE,
+  // 页面组件
+  PAGE,
+  // 私有组件
   PRIVATE,
+  // 基础组件
   BASE
 }

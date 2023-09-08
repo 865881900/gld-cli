@@ -2,7 +2,7 @@
   <router-view />
 </template>
 
-<script type="application/javascript">
+<script>
 export default {
   name: 'App'
 };

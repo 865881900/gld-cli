@@ -28,7 +28,7 @@ html {
 }
 
 body {
-  min-width: 1200px;
+  min-width: 1000px;
 }
 * {
   margin: 0;

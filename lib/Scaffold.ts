@@ -123,7 +123,7 @@ export default class Scaffold {
     // 可视化项目的端口
     this.program
       .command('page')
-      .description('自动生成vau页面')
+      .description('自动生成vue页面')
       .option('-p, --post <string>', '服务端口,默认为9999', false)
       .addOption(new Option('-u, --ui <ui...>', '需要支持的ui').choices(['gld', 'element']).default(['element']))
       .action((str) => {

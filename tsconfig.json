@@ -15,7 +15,7 @@
     // 使用typescript将JSX转换为js
     //"jsx": "react",
     //"module": "CommonJS",
-    "target": "es6",
+    "target": "es2021",
     // 指定ECMAScript目标版本
     "allowJs": true
     // 允许部分TypeScript和JavaScript代码库
